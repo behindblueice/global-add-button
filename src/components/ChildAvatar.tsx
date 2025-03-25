@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { Check } from 'lucide-react';
 
 interface ChildAvatarProps {
   name: string;
@@ -21,26 +22,13 @@ const ChildAvatar: React.FC<ChildAvatarProps> = ({
       onClick={onClick}
     >
       <div className={cn(
-        "child-avatar mb-2",
+        "child-avatar mb-2 relative",
         selected && "border-purple ring-2 ring-purple/30"
       )}>
-        <img src={image} alt={name} />
+        <img src={image} alt={name} className="w-full h-full object-cover" />
         {selected && (
-          <div className="absolute bottom-0 right-0 bg-purple rounded-full w-5 h-5 flex items-center justify-center">
-            <svg 
-              className="w-3 h-3 text-white" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24" 
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M5 13l4 4L19 7" 
-              />
-            </svg>
+          <div className="absolute bottom-0 right-0 bg-purple rounded-full w-5 h-5 flex items-center justify-center z-10">
+            <Check className="w-3 h-3 text-white" />
           </div>
         )}
       </div>

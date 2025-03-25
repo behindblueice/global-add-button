@@ -7,7 +7,7 @@ import RoomCard from '@/components/RoomCard';
 import FloatingActionButton from '@/components/FloatingActionButton';
 import ActionModal from '@/components/ActionModal';
 import ChildrenModal from '@/components/ChildrenModal';
-import { MessageSquare, FileText, Clock, AlertCircle, Pencil, BabyIcon } from 'lucide-react';
+import { Moon, Diaper, Utensils, CheckCircle, BabyIcon, Pencil } from 'lucide-react';
 
 // Mock data
 const rooms = [
@@ -45,40 +45,49 @@ const actions = [
   {
     id: 'a1',
     name: 'Send message',
-    description: 'Quick note to parents',
-    icon: <MessageSquare size={20} className="text-gray-600" />
+    icon: <CheckCircle size={20} className="text-gray-600" />
   },
   {
     id: 'a2',
-    name: 'Log diaper',
-    description: 'Record diaper change',
-    icon: <FileText size={20} className="text-gray-600" />
+    name: 'Log diaper or toilet visit',
+    icon: <Diaper size={20} className="text-gray-600" />
   },
   {
     id: 'a3',
     name: 'Log nap',
-    description: 'Start or end nap time',
-    icon: <Clock size={20} className="text-gray-600" />
+    icon: <Moon size={20} className="text-gray-600" />
   },
   {
     id: 'a4',
-    name: 'Log diaper or meal',
-    description: 'Multiple options',
-    icon: <FileText size={20} className="text-gray-600" />
+    name: 'Log meal',
+    icon: <Utensils size={20} className="text-gray-600" />
   },
   {
     id: 'a5',
     name: 'Check-in or out',
-    description: 'Arrival or departure',
-    icon: <AlertCircle size={20} className="text-gray-600" />
+    icon: <CheckCircle size={20} className="text-gray-600" />
   }
+];
+
+// Child images for preschool age children
+const childImages = [
+  "https://images.unsplash.com/photo-1555009393-f20bdb245c4d?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1576695444267-af2c3f38821b?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1629901925121-8a141c2a42c1?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1622782262245-bfb660f7446e?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1587616211362-cc49d47a8c53?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1595601827380-a3f606ea4fba?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1611979825964-530251576b28?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1537673156864-5d2c72de7824?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1554454946-b2d1e701c8c7?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
+  "https://images.unsplash.com/photo-1510525009512-ad7fc13eefab?w=150&h=150&fit=crop&crop=faces&auto=format&q=80"
 ];
 
 const createChildren = (count: number, roomId: string) => {
   return Array.from({ length: count }).map((_, i) => ({
     id: `child-${roomId}-${i}`,
-    name: ['Adam', 'Elise', 'Levi', 'Leo', 'Lottie', 'Nathaniel', 'Olivia', 'Zandra'][i % 8],
-    image: `https://i.pravatar.cc/150?img=${(i+3) * 4}`,
+    name: ['Adam', 'Elise', 'Levi', 'Leo', 'Lottie', 'Nathaniel', 'Olivia', 'Zandra', 'Maya', 'Noah', 'Lily', 'Ethan'][i % 12],
+    image: childImages[i % childImages.length],
     roomId
   }));
 };
@@ -223,6 +232,7 @@ const Index = () => {
         selectedChildren={selectedChildren}
         onChildSelect={handleChildSelect}
         onSubmit={handleSubmit}
+        currentAction={currentAction}
       />
     </div>
   );

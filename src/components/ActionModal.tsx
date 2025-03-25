@@ -1,12 +1,11 @@
 
 import React from 'react';
 import Modal from './Modal';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Moon, Clipboard, Utensils, CheckCircle } from 'lucide-react';
 
 interface Action {
   id: string;
   name: string;
-  description?: string;
   icon: React.ReactNode;
 }
 
@@ -42,9 +41,6 @@ const ActionModal: React.FC<ActionModalProps> = ({
               </div>
               <div className="text-left">
                 <div className="font-medium">{action.name}</div>
-                {action.description && (
-                  <div className="text-sm text-gray-500">{action.description}</div>
-                )}
               </div>
             </div>
             <ChevronRight size={20} className="text-gray-400" />
