@@ -130,4 +130,17 @@
   .scale-exit {
     @apply animate-scale-out;
   }
+
+  /* Updated toggle pill for 'Show signed out' */
+  .toggle-pill {
+    @apply py-1.5 px-4 rounded-full text-sm font-medium transition-colors;
+  }
+
+  .toggle-pill.active {
+    @apply bg-purple-lighter text-purple;
+  }
+
+  .toggle-pill.inactive {
+    @apply bg-gray-200 text-gray-700;
+  }
 }

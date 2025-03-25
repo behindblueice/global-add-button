@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import ChildAvatar from './ChildAvatar';
@@ -48,7 +47,6 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
   const [recentlySelectedState, setRecentlySelectedState] = useState<boolean>(false);
   const [showSignedOut, setShowSignedOut] = useState<boolean>(false);
 
-  // Initialize room selection states
   useEffect(() => {
     const initialState: Record<string, boolean> = {};
     rooms.forEach(room => {
@@ -78,14 +76,12 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
     const roomChildren = childrenByRoom(roomId);
     
     if (!currentState) {
-      // Select all children in this room
       roomChildren.forEach(child => {
         if (!selectedChildren.includes(child.id)) {
           onChildSelect(child.id);
         }
       });
     } else {
-      // Deselect all children in this room
       roomChildren.forEach(child => {
         if (selectedChildren.includes(child.id)) {
           onChildSelect(child.id);
@@ -98,14 +94,12 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
     setRecentlySelectedState(!recentlySelectedState);
     
     if (!recentlySelectedState) {
-      // Select all recently selected children
       recentlySelected.forEach(child => {
         if (!selectedChildren.includes(child.id)) {
           onChildSelect(child.id);
         }
       });
     } else {
-      // Deselect all recently selected children
       recentlySelected.forEach(child => {
         if (selectedChildren.includes(child.id)) {
           onChildSelect(child.id);
@@ -114,18 +108,15 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
     }
   };
 
-  // Check if all children in a room are selected
   const areAllChildrenInRoomSelected = (roomId: string) => {
     const roomChildren = childrenByRoom(roomId);
     return roomChildren.length > 0 && roomChildren.every(child => selectedChildren.includes(child.id));
   };
 
-  // Check if all recently selected children are selected
   const areAllRecentlySelectedChildrenSelected = () => {
     return recentlySelected.length > 0 && recentlySelected.every(child => selectedChildren.includes(child.id));
   };
 
-  // Update selection states when selectedChildren changes
   useEffect(() => {
     const newRoomSelectionState = {...roomSelectionState};
     
@@ -169,15 +160,12 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
       footerContent={footerContent}
     >
       <div className="relative pb-16">
-        {/* Show signed out toggle */}
         <div className="mb-4 flex">
           <button
             onClick={toggleShowSignedOut}
             className={cn(
-              "py-1.5 px-4 rounded-full text-sm font-medium transition-colors",
-              showSignedOut 
-                ? "bg-gray-200 text-gray-700" 
-                : "bg-purple-light text-purple"
+              "toggle-pill",
+              showSignedOut ? "inactive" : "active"
             )}
           >
             {showSignedOut ? "Don't show signed out" : "Show signed out"}
@@ -185,7 +173,6 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
         </div>
 
         <div className="space-y-6">
-          {/* Recently Selected Section */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-gray-500">Recently selected</h3>
@@ -210,7 +197,6 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
             </div>
           </div>
 
-          {/* Rooms Section */}
           <div className="mb-6">
             {rooms.map((room) => (
               <div key={room.id} className="mb-4">

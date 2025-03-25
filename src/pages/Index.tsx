@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Greeting from '@/components/Greeting';
@@ -68,20 +69,20 @@ const actions = [
   }
 ];
 
-// Child images for preschool age children - updated with appropriate images
+// Updated with working child images (more appropriate for preschool)
 const childImages = [
-  "public/lovable-uploads/a6257a2d-afdb-48da-9ba7-c2d6bc25773a.png",
-  "https://images.unsplash.com/photo-1588042171007-50e48d2e3e70?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
   "https://images.unsplash.com/photo-1588795945098-8f87287be545?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
   "https://images.unsplash.com/photo-1622497752788-82d5d85ffcca?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
   "https://images.unsplash.com/photo-1616039407031-81cec0905c2b?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
   "https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
   "https://images.unsplash.com/photo-1519238425857-d6fc6abf7756?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
-  "https://images.unsplash.com/photo-1635193809209-7a3ba3a4d256?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
-  "https://images.unsplash.com/photo-1580894896813-652ff5aa8146?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
-  "https://images.unsplash.com/photo-1540479859555-17af45c78602?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
-  "https://images.unsplash.com/photo-1618143364935-a8b5dfe6fe47?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
-  "https://images.unsplash.com/photo-1592184269734-3c2a3cf311d5?w=250&h=250&fit=crop&crop=faces&auto=format&q=90"
+  "https://images.unsplash.com/photo-1635193809209-7a3ba3a4d256?w=250&h=250&fit=crop&crop=faces&auto=format&q=90", 
+  "https://images.unsplash.com/photo-1537655780520-1e392ead81f2?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1548507746-d71d8e96dc4a?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1516627145497-ae6968895b40?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1518172774705-99cd4f4c0781?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1633283161135-904556dd8fdb?w=250&h=250&fit=crop&crop=faces&auto=format&q=90"
 ];
 
 const createChildren = (count: number, roomId: string, signedOutCount: number = 0) => {
