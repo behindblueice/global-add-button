@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Greeting from '@/components/Greeting';
@@ -68,34 +69,39 @@ const actions = [
   }
 ];
 
-// Child images for preschool age children
+// Child images for preschool age children - updated to ensure all images work properly
 const childImages = [
-  "https://images.unsplash.com/photo-1555009393-f20bdb245c4d?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1576695444267-af2c3f38821b?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1629901925121-8a141c2a42c1?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1622782262245-bfb660f7446e?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1587616211362-cc49d47a8c53?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1595601827380-a3f606ea4fba?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1611979825964-530251576b28?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1537673156864-5d2c72de7824?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1554454946-b2d1e701c8c7?w=150&h=150&fit=crop&crop=faces&auto=format&q=80",
-  "https://images.unsplash.com/photo-1510525009512-ad7fc13eefab?w=150&h=150&fit=crop&crop=faces&auto=format&q=80"
+  "https://images.unsplash.com/photo-1601288496920-b6154fe3626a?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1544126591-2468244d15b4?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1544126591-2468244d15b4?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1555009393-f20bdb245c4d?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1570127922889-51c7095b4ecb?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1566004100631-35d015d6a99c?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1540479859555-17af45c78602?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1587616211362-cc49d47a8c53?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1627624117298-94d97ac34c65?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=250&h=250&fit=crop&crop=faces&auto=format&q=90",
+  "https://images.unsplash.com/photo-1628525877813-3780a27528ca?w=250&h=250&fit=crop&crop=faces&auto=format&q=90"
 ];
 
-const createChildren = (count: number, roomId: string) => {
-  return Array.from({ length: count }).map((_, i) => ({
+const createChildren = (count: number, roomId: string, signedOutCount: number = 0) => {
+  const total = count + signedOutCount;
+  return Array.from({ length: total }).map((_, i) => ({
     id: `child-${roomId}-${i}`,
     name: ['Adam', 'Elise', 'Levi', 'Leo', 'Lottie', 'Nathaniel', 'Olivia', 'Zandra', 'Maya', 'Noah', 'Lily', 'Ethan'][i % 12],
     image: childImages[i % childImages.length],
-    roomId
+    roomId,
+    signedOut: i >= count // The last 'signedOutCount' children will be marked as signed out
   }));
 };
 
+// Create children with some marked as signed out
 const allChildren = [
-  ...createChildren(8, 'r1'),
-  ...createChildren(12, 'r2'),
-  ...createChildren(10, 'r3'),
-  ...createChildren(6, 'r4')
+  ...createChildren(8, 'r1', 2),
+  ...createChildren(12, 'r2', 3),
+  ...createChildren(10, 'r3', 2),
+  ...createChildren(6, 'r4', 1)
 ];
 
 const recentlySelected = [

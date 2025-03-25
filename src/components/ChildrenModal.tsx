@@ -4,6 +4,7 @@ import Modal from './Modal';
 import ChildAvatar from './ChildAvatar';
 import { ChevronDown, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface Room {
   id: string;
@@ -16,6 +17,7 @@ interface Child {
   name: string;
   image: string;
   roomId: string;
+  signedOut?: boolean;
 }
 
 interface ChildrenModalProps {
@@ -44,6 +46,7 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
   const [expandedRooms, setExpandedRooms] = useState<string[]>([rooms[0]?.id || '']);
   const [roomSelectionState, setRoomSelectionState] = useState<Record<string, boolean>>({});
   const [recentlySelectedState, setRecentlySelectedState] = useState<boolean>(false);
+  const [showSignedOut, setShowSignedOut] = useState<boolean>(false);
 
   // Initialize room selection states
   useEffect(() => {
@@ -63,7 +66,9 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
   };
 
   const childrenByRoom = (roomId: string) => {
-    return children.filter(child => child.roomId === roomId);
+    return showSignedOut 
+      ? children.filter(child => child.roomId === roomId)
+      : children.filter(child => child.roomId === roomId && !child.signedOut);
   };
 
   const handleSelectAllForRoom = (roomId: string) => {
@@ -112,12 +117,12 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
   // Check if all children in a room are selected
   const areAllChildrenInRoomSelected = (roomId: string) => {
     const roomChildren = childrenByRoom(roomId);
-    return roomChildren.every(child => selectedChildren.includes(child.id));
+    return roomChildren.length > 0 && roomChildren.every(child => selectedChildren.includes(child.id));
   };
 
   // Check if all recently selected children are selected
   const areAllRecentlySelectedChildrenSelected = () => {
-    return recentlySelected.every(child => selectedChildren.includes(child.id));
+    return recentlySelected.length > 0 && recentlySelected.every(child => selectedChildren.includes(child.id));
   };
 
   // Update selection states when selectedChildren changes
@@ -130,85 +135,112 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
     
     setRoomSelectionState(newRoomSelectionState);
     setRecentlySelectedState(areAllRecentlySelectedChildrenSelected());
-  }, [selectedChildren]);
+  }, [selectedChildren, showSignedOut]);
+
+  const toggleShowSignedOut = () => {
+    setShowSignedOut(prev => !prev);
+  };
 
   return (
     <Modal
       title="Select children"
       isOpen={isOpen}
       onClose={onClose}
-      fullScreen
+      initialHeight="65vh"
+      expandOnScroll
     >
-      <div className="max-h-[calc(100vh-8rem)] overflow-y-auto pb-24">
-        {/* Recently Selected Section */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-gray-500">Recently selected</h3>
-            <button 
-              className="text-sm text-purple"
-              onClick={handleSelectAllRecentlySelected}
-            >
-              {recentlySelectedState ? 'Deselect all' : 'Select all'}
-            </button>
-          </div>
-          <div className="grid grid-cols-5 gap-x-2 gap-y-4">
-            {recentlySelected.map((child) => (
-              <ChildAvatar
-                key={child.id}
-                name={child.name}
-                image={child.image}
-                selected={selectedChildren.includes(child.id)}
-                onClick={() => onChildSelect(child.id)}
-              />
-            ))}
-          </div>
+      <div className="relative">
+        {/* Show signed out toggle */}
+        <div className="mb-4 flex justify-center">
+          <button
+            onClick={toggleShowSignedOut}
+            className={cn(
+              "py-1.5 px-4 rounded-full text-sm font-medium transition-colors",
+              showSignedOut 
+                ? "bg-gray-200 text-gray-700" 
+                : "bg-purple-light text-white"
+            )}
+          >
+            {showSignedOut ? "Don't show signed out" : "Show signed out"}
+          </button>
         </div>
 
-        {/* Rooms Section */}
-        <div className="mb-6">
-          {rooms.map((room) => (
-            <div key={room.id} className="mb-4">
-              <div className="flex items-center justify-between w-full p-2 mb-2">
-                <button
-                  className="flex items-center"
-                  onClick={() => toggleRoom(room.id)}
-                >
-                  <div className="w-6 h-6 rounded-full bg-purple-lighter flex items-center justify-center">
-                    <Users size={14} className="text-purple" />
-                  </div>
-                  <h3 className="ml-2 font-medium">{room.name}</h3>
-                  <ChevronDown 
-                    size={18} 
-                    className={cn(
-                      "ml-2 text-gray-400 transition-transform duration-300",
-                      expandedRooms.includes(room.id) && "transform rotate-180"
-                    )}
-                  />
-                </button>
-                <button 
-                  className="text-sm text-purple"
-                  onClick={() => handleSelectAllForRoom(room.id)}
-                >
-                  {roomSelectionState[room.id] ? 'Deselect all' : 'Select all'}
-                </button>
-              </div>
-              
-              {expandedRooms.includes(room.id) && (
-                <div className="animate-fade-in grid grid-cols-5 gap-x-2 gap-y-4 pl-2">
-                  {childrenByRoom(room.id).map((child) => (
-                    <ChildAvatar
-                      key={child.id}
-                      name={child.name}
-                      image={child.image}
-                      selected={selectedChildren.includes(child.id)}
-                      onClick={() => onChildSelect(child.id)}
-                    />
-                  ))}
-                </div>
-              )}
+        <ScrollArea className="pr-4 pb-24" style={{ maxHeight: "calc(100vh - 16rem)" }}>
+          {/* Recently Selected Section */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-medium text-gray-500">Recently selected</h3>
+              <button 
+                className="text-sm text-purple"
+                onClick={handleSelectAllRecentlySelected}
+              >
+                {recentlySelectedState ? 'Deselect all' : 'Select all'}
+              </button>
             </div>
-          ))}
-        </div>
+            <div className="grid grid-cols-4 gap-x-2 gap-y-6">
+              {recentlySelected.map((child) => (
+                <ChildAvatar
+                  key={child.id}
+                  name={child.name}
+                  image={child.image}
+                  selected={selectedChildren.includes(child.id)}
+                  onClick={() => onChildSelect(child.id)}
+                  signedOut={child.signedOut}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Rooms Section */}
+          <div className="mb-6">
+            {rooms.map((room) => (
+              <div key={room.id} className="mb-4">
+                <div className="flex items-center justify-between w-full p-2 mb-2">
+                  <button
+                    className="flex items-center"
+                    onClick={() => toggleRoom(room.id)}
+                  >
+                    <div className="w-6 h-6 rounded-full bg-purple-lighter flex items-center justify-center">
+                      <Users size={14} className="text-purple" />
+                    </div>
+                    <h3 className="ml-2 font-medium">{room.name}</h3>
+                    <ChevronDown 
+                      size={18} 
+                      className={cn(
+                        "ml-2 text-gray-400 transition-transform duration-300",
+                        expandedRooms.includes(room.id) && "transform rotate-180"
+                      )}
+                    />
+                  </button>
+                  
+                  {expandedRooms.includes(room.id) && (
+                    <button 
+                      className="text-sm text-purple"
+                      onClick={() => handleSelectAllForRoom(room.id)}
+                    >
+                      {roomSelectionState[room.id] ? 'Deselect all' : 'Select all'}
+                    </button>
+                  )}
+                </div>
+                
+                {expandedRooms.includes(room.id) && (
+                  <div className="animate-fade-in grid grid-cols-4 gap-x-2 gap-y-6 pl-2">
+                    {childrenByRoom(room.id).map((child) => (
+                      <ChildAvatar
+                        key={child.id}
+                        name={child.name}
+                        image={child.image}
+                        selected={selectedChildren.includes(child.id)}
+                        onClick={() => onChildSelect(child.id)}
+                        signedOut={child.signedOut}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
 
       {/* Action Buttons */}
