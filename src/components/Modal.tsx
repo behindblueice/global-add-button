@@ -12,6 +12,8 @@ interface ModalProps {
   fullScreen?: boolean;
   initialHeight?: string;
   expandOnScroll?: boolean;
+  showFooter?: boolean;
+  footerContent?: React.ReactNode;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -22,9 +24,12 @@ const Modal: React.FC<ModalProps> = ({
   className,
   fullScreen = false,
   initialHeight,
-  expandOnScroll = false
+  expandOnScroll = false,
+  showFooter = false,
+  footerContent
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -40,8 +45,8 @@ const Modal: React.FC<ModalProps> = ({
     if (!expandOnScroll) return;
 
     const handleScroll = () => {
-      if (modalRef.current) {
-        const scrollTop = modalRef.current.scrollTop;
+      if (contentRef.current) {
+        const scrollTop = contentRef.current.scrollTop;
         if (scrollTop > 50 && !expanded) {
           setExpanded(true);
         } else if (scrollTop <= 50 && expanded) {
@@ -50,14 +55,14 @@ const Modal: React.FC<ModalProps> = ({
       }
     };
 
-    const modalElement = modalRef.current;
-    if (modalElement) {
-      modalElement.addEventListener('scroll', handleScroll);
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      contentElement.addEventListener('scroll', handleScroll);
     }
 
     return () => {
-      if (modalElement) {
-        modalElement.removeEventListener('scroll', handleScroll);
+      if (contentElement) {
+        contentElement.removeEventListener('scroll', handleScroll);
       }
     };
   }, [expandOnScroll, expanded]);
@@ -84,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({
         ref={modalRef}
         style={modalStyle}
         className={cn(
-          "glass-modal w-full overflow-auto animate-slide-in-up transition-all duration-300",
+          "glass-modal w-full overflow-hidden flex flex-col animate-slide-in-up transition-all duration-300",
           fullScreen ? "min-h-screen" : (expanded ? "min-h-screen" : ""),
           className
         )}
@@ -98,9 +103,21 @@ const Modal: React.FC<ModalProps> = ({
             <X size={20} />
           </button>
         </div>
-        <div className="p-5">
-          {children}
+        
+        <div 
+          ref={contentRef}
+          className="flex-1 overflow-auto"
+        >
+          <div className="p-5">
+            {children}
+          </div>
         </div>
+        
+        {showFooter && (
+          <div className="sticky bottom-0 left-0 right-0 bg-white p-4 border-t shadow-sm">
+            {footerContent}
+          </div>
+        )}
       </div>
     </div>
   );

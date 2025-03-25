@@ -141,6 +141,23 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
     setShowSignedOut(prev => !prev);
   };
 
+  const footerContent = (
+    <div className="flex space-x-4">
+      <button 
+        className="flex-1 py-3 px-4 rounded-xl border border-gray-300 text-gray-700"
+        onClick={onClose}
+      >
+        Cancel
+      </button>
+      <button 
+        className="flex-1 py-3 px-4 rounded-xl bg-purple text-white font-medium"
+        onClick={onSubmit}
+      >
+        {currentAction ? `${currentAction.name} (${selectedChildren.length})` : 'Log step'}
+      </button>
+    </div>
+  );
+
   return (
     <Modal
       title="Select children"
@@ -148,24 +165,26 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
       onClose={onClose}
       initialHeight="65vh"
       expandOnScroll
+      showFooter={true}
+      footerContent={footerContent}
     >
-      <div className="relative">
+      <div className="relative pb-16">
         {/* Show signed out toggle */}
-        <div className="mb-4 flex justify-center">
+        <div className="mb-4 flex">
           <button
             onClick={toggleShowSignedOut}
             className={cn(
               "py-1.5 px-4 rounded-full text-sm font-medium transition-colors",
               showSignedOut 
                 ? "bg-gray-200 text-gray-700" 
-                : "bg-purple-light text-white"
+                : "bg-purple-light text-purple"
             )}
           >
             {showSignedOut ? "Don't show signed out" : "Show signed out"}
           </button>
         </div>
 
-        <ScrollArea className="pr-4 pb-24" style={{ maxHeight: "calc(100vh - 16rem)" }}>
+        <div className="space-y-6">
           {/* Recently Selected Section */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
@@ -177,7 +196,7 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
                 {recentlySelectedState ? 'Deselect all' : 'Select all'}
               </button>
             </div>
-            <div className="grid grid-cols-4 gap-x-2 gap-y-6">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-6">
               {recentlySelected.map((child) => (
                 <ChildAvatar
                   key={child.id}
@@ -224,7 +243,7 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
                 </div>
                 
                 {expandedRooms.includes(room.id) && (
-                  <div className="animate-fade-in grid grid-cols-4 gap-x-2 gap-y-6 pl-2">
+                  <div className="animate-fade-in grid grid-cols-3 gap-x-2 gap-y-6 pl-2">
                     {childrenByRoom(room.id).map((child) => (
                       <ChildAvatar
                         key={child.id}
@@ -240,23 +259,7 @@ const ChildrenModal: React.FC<ChildrenModalProps> = ({
               </div>
             ))}
           </div>
-        </ScrollArea>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t flex space-x-4">
-        <button 
-          className="flex-1 py-3 px-4 rounded-xl border border-gray-300 text-gray-700"
-          onClick={onClose}
-        >
-          Cancel
-        </button>
-        <button 
-          className="flex-1 py-3 px-4 rounded-xl bg-purple text-white font-medium"
-          onClick={onSubmit}
-        >
-          {currentAction ? `${currentAction.name}` : 'Log step'}
-        </button>
+        </div>
       </div>
     </Modal>
   );

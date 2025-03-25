@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -79,7 +80,7 @@
 /* Custom utility classes */
 @layer components {
   .child-avatar {
-    @apply w-24 h-24 rounded-full overflow-hidden flex items-center justify-center bg-purple-lighter border-2 border-white shadow-sm transition-transform duration-300 ease-in-out;
+    @apply w-32 h-32 rounded-full overflow-hidden flex items-center justify-center bg-purple-lighter border-2 border-white shadow-sm transition-transform duration-300 ease-in-out;
   }
   
   .child-avatar img {
