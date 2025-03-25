@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Modal from './Modal';
-import { ChevronRight, Moon, Clipboard, Utensils, CheckCircle } from 'lucide-react';
+import { ChevronRight, Moon, Clipboard, Utensils, CheckCircle, BabyIcon } from 'lucide-react';
 
 interface Action {
   id: string;

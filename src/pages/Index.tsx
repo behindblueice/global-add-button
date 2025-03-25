@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Greeting from '@/components/Greeting';
@@ -7,7 +6,7 @@ import RoomCard from '@/components/RoomCard';
 import FloatingActionButton from '@/components/FloatingActionButton';
 import ActionModal from '@/components/ActionModal';
 import ChildrenModal from '@/components/ChildrenModal';
-import { Moon, Diaper, Utensils, CheckCircle, BabyIcon, Pencil } from 'lucide-react';
+import { Moon, BabyIcon, Utensils, CheckCircle, Pencil, Clipboard } from 'lucide-react';
 
 // Mock data
 const rooms = [
@@ -50,7 +49,7 @@ const actions = [
   {
     id: 'a2',
     name: 'Log diaper or toilet visit',
-    icon: <Diaper size={20} className="text-gray-600" />
+    icon: <BabyIcon size={20} className="text-gray-600" />
   },
   {
     id: 'a3',
